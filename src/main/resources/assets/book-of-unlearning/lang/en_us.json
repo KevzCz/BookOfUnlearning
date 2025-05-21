@@ -1,0 +1,7 @@
+{
+  "itemGroup.book-of-unlearning.book_of_unlearning_group": "Book of Unlearning",
+  "screen.book_of_unlearning.skill_trees": "Available Skill Trees",
+  "item.book-of-unlearning.book_of_unlearning": "Book of Unlearning",
+  "tooltip.book_of_unlearning.reset_info": "Reset your desired Skill Tree",
+  "tooltip.book_of_unlearning.skill_tree_button": "Click to reset this skill tree"
+}

@@ -1,0 +1,34 @@
+{
+	"schemaVersion": 1,
+	"id": "book-of-unlearning",
+	"version": "${version}",
+	"name": "Book of Unlearning",
+	"description": "Reset your desired Skill Trees",
+	"authors": [
+		"KevzCz",
+		"PixelDreamStudios"
+	],
+	"contact": {
+		"homepage": "https://fabricmc.net/",
+		"sources": "https://github.com/FabricMC/fabric-example-mod"
+	},
+	"license": "CC0-1.0",
+	"icon": "assets/book-of-unlearning/icon.png",
+	"environment": "*",
+	"entrypoints": {
+		"main": ["net.pixeldreamstudios.bookofunlearning.BookOfUnlearning"],
+		"client": ["net.pixeldreamstudios.bookofunlearning.client.BookOfUnlearningClient"]
+	},
+	"mixins": [
+		"book-of-unlearning.mixins.json"
+	],
+	"depends": {
+		"fabricloader": ">=0.16.14",
+		"minecraft": "~1.21.1",
+		"java": ">=21",
+		"fabric-api": "*"
+	},
+	"suggests": {
+		"another-mod": "*"
+	}
+}

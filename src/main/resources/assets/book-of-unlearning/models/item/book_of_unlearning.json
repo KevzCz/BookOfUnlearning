@@ -1,0 +1,6 @@
+{
+  "parent": "item/generated",
+  "textures": {
+    "layer0": "book-of-unlearning:item/book_of_unlearning"
+  }
+}
