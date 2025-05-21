@@ -9,10 +9,11 @@
 		"PixelDreamStudios"
 	],
 	"contact": {
-		"homepage": "https://fabricmc.net/",
-		"sources": "https://github.com/FabricMC/fabric-example-mod"
+		"homepage": "https://www.curseforge.com/minecraft/mc-mods/book-of-unlearning",
+		"sources": "https://github.com/KevzCz/BookOfUnlearning",
+		"issues": "https://github.com/KevzCz/BookOfUnlearning/issues"
 	},
-	"license": "CC0-1.0",
+	"license": "MIT",
 	"icon": "assets/book-of-unlearning/icon.png",
 	"environment": "*",
 	"entrypoints": {
@@ -26,7 +27,8 @@
 		"fabricloader": ">=0.16.14",
 		"minecraft": "~1.21.1",
 		"java": ">=21",
-		"fabric-api": "*"
+		"fabric-api": "*",
+		"puffish_skills": "*"
 	},
 	"suggests": {
 		"another-mod": "*"

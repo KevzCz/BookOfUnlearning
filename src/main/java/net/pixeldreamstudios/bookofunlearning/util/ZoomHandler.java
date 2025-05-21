@@ -5,8 +5,8 @@ import net.minecraft.item.ItemStack;
 import net.pixeldreamstudios.bookofunlearning.item.BookOfUnlearningItems;
 
 public class ZoomHandler {
-    public static float zoomProgress = 0f; // 0.0 = no zoom, 1.0 = full zoom
-    private static final float ZOOM_SPEED = 0.01f; // How fast to zoom in/out per tick
+    public static float zoomProgress = 0f;
+    private static final float ZOOM_SPEED = 0.01f;
 
     public static void tick() {
         MinecraftClient client = MinecraftClient.getInstance();
@@ -25,6 +25,6 @@ public class ZoomHandler {
 
     public static double applyZoom(double originalFov) {
         float clamped = Math.min(1f, Math.max(0f, zoomProgress));
-        return originalFov * (1.0 - 0.6 * clamped); // Up to 60% zoom
+        return originalFov * (1.0 - 0.6 * clamped);
     }
 }

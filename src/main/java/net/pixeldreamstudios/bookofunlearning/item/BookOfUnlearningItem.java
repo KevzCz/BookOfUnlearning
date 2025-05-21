@@ -23,7 +23,7 @@ import net.pixeldreamstudios.bookofunlearning.network.BookOfUnlearningServer;
 import java.util.List;
 
 public class BookOfUnlearningItem extends Item {
-    private static final int CHARGE_TIME = 60; // 3 seconds (20 ticks/sec)
+    private static final int CHARGE_TIME = 60;
 
     public BookOfUnlearningItem(Settings settings) {
         super(settings);
@@ -31,7 +31,7 @@ public class BookOfUnlearningItem extends Item {
 
     @Override
     public TypedActionResult<ItemStack> use(World world, PlayerEntity player, Hand hand) {
-        player.setCurrentHand(hand); // Begin using
+        player.setCurrentHand(hand);
         return TypedActionResult.consume(player.getStackInHand(hand));
     }
     @Override
@@ -50,7 +50,7 @@ public class BookOfUnlearningItem extends Item {
 
     @Override
     public UseAction getUseAction(ItemStack stack) {
-        return UseAction.BOW; // or UseAction.SPYGLASS for zoom effect
+        return UseAction.BOW;
     }
 
     @Override
@@ -66,14 +66,13 @@ public class BookOfUnlearningItem extends Item {
                 spawnVortexParticles(player);
             }
 
-            // 🔊 Play ambient sound randomly during charge
             if (player.age % 10 == 0 && player.getRandom().nextFloat() < 0.5f) {
                 world.playSound(
                         player.getX(), player.getY(), player.getZ(),
                         SoundEvents.BLOCK_ENCHANTMENT_TABLE_USE,
                         SoundCategory.PLAYERS,
-                        0.3f + player.getRandom().nextFloat() * 0.3f, // volume: 0.3–0.6
-                        1.0f + player.getRandom().nextFloat() * 0.4f, // pitch: 1.0–1.4
+                        0.3f + player.getRandom().nextFloat() * 0.3f,
+                        1.0f + player.getRandom().nextFloat() * 0.4f,
                         false
                 );
             }
@@ -91,7 +90,6 @@ public class BookOfUnlearningItem extends Item {
 
     @Override
     public void onStoppedUsing(ItemStack stack, World world, LivingEntity user, int remainingUseTicks) {
-        // Optionally play cancel sound or particles if released early
         if (world.isClient && user instanceof PlayerEntity && remainingUseTicks > 0) {
             world.playSound(user.getX(), user.getY(), user.getZ(), SoundEvents.BLOCK_ENCHANTMENT_TABLE_USE,
                     SoundCategory.PLAYERS, 0.5f, 1.5f, false);

@@ -21,7 +21,7 @@ public class SkillTreeScreen extends Screen {
 
     public SkillTreeScreen(List<Identifier> skillTrees) {
         super(Text.translatable("screen.book_of_unlearning.skill_trees")
-                .copy().setStyle(Style.EMPTY.withColor(0xEFD8A4).withBold(true))); // Bright parchment gold
+                .copy().setStyle(Style.EMPTY.withColor(0xEFD8A4).withBold(true)));
         this.skillTrees = skillTrees;
     }
 
@@ -62,9 +62,9 @@ public class SkillTreeScreen extends Screen {
 
     @Override
     public void render(DrawContext context, int mouseX, int mouseY, float delta) {
-        super.render(context, mouseX, mouseY, delta); // for tooltips and hover effect
+        super.render(context, mouseX, mouseY, delta);
 
-        // Background texture
+
         int panelWidth = 200;
         int panelHeight = 200;
         int panelX = width / 2 - panelWidth / 2;
@@ -74,17 +74,16 @@ public class SkillTreeScreen extends Screen {
         context.fillGradient(panelX, panelY, panelX + panelWidth, panelY + panelHeight, 0xAA111111, 0xAA222222);
         context.drawBorder(panelX, panelY, panelWidth, panelHeight, 0xFFDDCCAA);
 
-        // Draw fancy title
+
         context.drawCenteredTextWithShadow(textRenderer, title, width / 2, panelY + 10, 0xFFEBD7);
 
-        // Draw "card" backgrounds behind each button
         for (ButtonWidget button : buttons) {
             int x = button.getX();
             int y = button.getY();
             int w = button.getWidth();
             int h = button.getHeight();
 
-            // Background color changes on hover
+
             int fillColor = button.isHovered() ? 0x44FFFFFF : 0x33111111;
             int borderColor = button.isHovered() ? 0xFFD6CFAA : 0xFF444444;
 

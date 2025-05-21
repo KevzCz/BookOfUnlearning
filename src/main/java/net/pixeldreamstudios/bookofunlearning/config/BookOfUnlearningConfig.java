@@ -18,31 +18,30 @@ import java.util.Set;
 public class BookOfUnlearningConfig {
     private static final File CONFIG_FILE = new File("config/book_of_unlearning.json");
 
-    // ✅ Enable pretty printing
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
 
-    private static Set<Identifier> blacklistedTrees = new HashSet<>();
+    private static final Set<Identifier> blacklistedTrees = new HashSet<>();
 
     public static void load() {
         try {
             if (!CONFIG_FILE.exists()) {
                 BookOfUnlearning.LOGGER.info("No Book of Unlearning config found, generating default.");
 
-                // Ensure config directory exists
+
                 CONFIG_FILE.getParentFile().mkdirs();
 
-                // Create default config
+
                 JsonObject defaultConfig = new JsonObject();
                 defaultConfig.add("blacklisted_skill_trees", GSON.toJsonTree(Collections.emptyList()));
 
                 try (FileWriter writer = new FileWriter(CONFIG_FILE)) {
-                    GSON.toJson(defaultConfig, writer); // ✅ Write pretty-printed JSON
+                    GSON.toJson(defaultConfig, writer);
                 }
 
                 return;
             }
 
-            // Read existing config
+
             JsonObject obj = GSON.fromJson(new FileReader(CONFIG_FILE), JsonObject.class);
             Type listType = new TypeToken<Set<String>>() {}.getType();
 
@@ -71,7 +70,4 @@ public class BookOfUnlearningConfig {
         return blacklistedTrees.contains(id);
     }
 
-    public static Set<Identifier> getBlacklistedTrees() {
-        return Collections.unmodifiableSet(blacklistedTrees);
-    }
 }
