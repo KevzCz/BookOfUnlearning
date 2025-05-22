@@ -10,14 +10,20 @@ import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import net.pixeldreamstudios.bookofunlearning.network.ResetSkillTreePayload;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class SkillTreeScreen extends Screen {
     private final List<Identifier> skillTrees;
-    private final List<ButtonWidget> buttons = new java.util.ArrayList<>();
-
+    private final List<ButtonWidget> buttons = new ArrayList<>();
     private static final Identifier BACKGROUND_TEXTURE =
             Identifier.of("book-of-unlearning", "textures/gui/skill_tree_bg.png");
+
+    private int scrollOffset = 0;
+    private int maxVisible = 5;
+    private int cardHeight = 24;
+    private int spacing = 10;
+    private int scrollStep = cardHeight + spacing;
 
     public SkillTreeScreen(List<Identifier> skillTrees) {
         super(Text.translatable("screen.book_of_unlearning.skill_trees")
@@ -27,15 +33,15 @@ public class SkillTreeScreen extends Screen {
 
     @Override
     protected void init() {
+        // Properly clear screen from all previous children/widgets
+        this.clearChildren();
         buttons.clear();
 
         int cardWidth = 100;
-        int cardHeight = 24;
-        int spacing = 10;
-        int totalHeight = skillTrees.size() * (cardHeight + spacing);
-        int startY = (height / 2) - (totalHeight / 2);
+        int startY = height / 2 - ((maxVisible * (cardHeight + spacing)) / 2) + 12;
+        int visibleEnd = Math.min(skillTrees.size(), scrollOffset + maxVisible);
 
-        for (int i = 0; i < skillTrees.size(); i++) {
+        for (int i = scrollOffset; i < visibleEnd; i++) {
             Identifier tree = skillTrees.get(i);
             String name = beautify(tree);
 
@@ -46,24 +52,33 @@ public class SkillTreeScreen extends Screen {
                         ClientPlayNetworking.send(new ResetSkillTreePayload(tree));
                         this.close();
                     })
-                    .position(width / 2 - cardWidth / 2, startY + i * (cardHeight + spacing))
+                    .position(width / 2 - cardWidth / 2, startY + (i - scrollOffset) * (cardHeight + spacing))
                     .size(cardWidth, cardHeight)
                     .tooltip(Tooltip.of(Text.translatable("tooltip.book_of_unlearning.skill_tree_button")))
                     .build();
 
-            button.active = true;
             buttons.add(button);
             addDrawableChild(button);
         }
     }
 
 
+    @Override
+    public boolean mouseScrolled(double mouseX, double mouseY, double horizontalAmount, double verticalAmount) {
+        int maxScroll = Math.max(0, skillTrees.size() - maxVisible);
+        if (verticalAmount > 0) {
+            scrollOffset = Math.max(0, scrollOffset - 1);
+        } else if (verticalAmount < 0) {
+            scrollOffset = Math.min(maxScroll, scrollOffset + 1);
+        }
+        init(); // Rebuild buttons based on new scroll offset
+        return true;
+    }
 
 
     @Override
     public void render(DrawContext context, int mouseX, int mouseY, float delta) {
         super.render(context, mouseX, mouseY, delta);
-
 
         int panelWidth = 200;
         int panelHeight = 200;
@@ -74,7 +89,6 @@ public class SkillTreeScreen extends Screen {
         context.fillGradient(panelX, panelY, panelX + panelWidth, panelY + panelHeight, 0xAA111111, 0xAA222222);
         context.drawBorder(panelX, panelY, panelWidth, panelHeight, 0xFFDDCCAA);
 
-
         context.drawCenteredTextWithShadow(textRenderer, title, width / 2, panelY + 10, 0xFFEBD7);
 
         for (ButtonWidget button : buttons) {
@@ -83,18 +97,13 @@ public class SkillTreeScreen extends Screen {
             int w = button.getWidth();
             int h = button.getHeight();
 
-
             int fillColor = button.isHovered() ? 0x44FFFFFF : 0x33111111;
             int borderColor = button.isHovered() ? 0xFFD6CFAA : 0xFF444444;
 
             context.fill(x - 2, y - 2, x + w + 2, y + h + 2, fillColor);
             context.drawBorder(x - 2, y - 2, w + 4, h + 4, borderColor);
         }
-
     }
-
-
-
 
     private String beautify(Identifier id) {
         String path = id.getPath().replace('_', ' ');
