@@ -8,7 +8,10 @@ import net.puffish.skillsmod.SkillsMod;
 
 public class ServerNetwork {
     public static void register() {
+
+        PayloadTypeRegistry.playS2C().register(OpenSkillTreeScreenPayload.ID, OpenSkillTreeScreenPayload.CODEC);
         PayloadTypeRegistry.playC2S().register(ResetSkillTreePayload.ID, ResetSkillTreePayload.CODEC);
+
 
         ServerPlayNetworking.registerGlobalReceiver(ResetSkillTreePayload.ID, (payload, context) -> {
             ServerPlayerEntity player = context.player();
@@ -27,6 +30,6 @@ public class ServerNetwork {
                 }
             });
         });
-
     }
+
 }

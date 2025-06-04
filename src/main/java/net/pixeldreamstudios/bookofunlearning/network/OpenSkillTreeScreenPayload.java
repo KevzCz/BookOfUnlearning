@@ -1,12 +1,9 @@
 package net.pixeldreamstudios.bookofunlearning.network;
 
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.network.codec.PacketCodec;
 import net.minecraft.network.packet.CustomPayload;
 import net.minecraft.util.Identifier;
-import net.pixeldreamstudios.bookofunlearning.client.screen.SkillTreeScreen;
 
 import java.util.List;
 
@@ -31,13 +28,5 @@ public record OpenSkillTreeScreenPayload(List<Identifier> skillTrees) implements
 
     public void write(PacketByteBuf buf) {
         buf.writeCollection(skillTrees, PacketByteBuf::writeIdentifier);
-    }
-
-    public void handle() {
-        MinecraftClient client = MinecraftClient.getInstance();
-        client.execute(() -> {
-            Screen screen = new SkillTreeScreen(skillTrees);
-            client.setScreen(screen);
-        });
     }
 }
